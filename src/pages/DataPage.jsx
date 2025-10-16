@@ -29,7 +29,7 @@ export default function DataPage() {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-800 to-purple-700">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-white border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-white text-xl font-medium">Loading your data...</p>
+          <p className="text-white text-xl font-medium">Loading data...</p>
         </div>
       </div>
     );
@@ -53,11 +53,6 @@ export default function DataPage() {
       return sortAsc ? a[sortField] - b[sortField] : b[sortField] - a[sortField];
     });
 
-  // Stats
-  const totalRecords = filteredData.length;
-  const totalViews = totalRecords > 0 ? filteredData.reduce((sum, i) => sum + (parseInt(i.views) || 0), 0) : 0;
-  const avgViews = totalRecords > 0 ? Math.round(totalViews / totalRecords) : 0;
-
   // Sorting handler
   const handleSort = (field) => {
     if (sortField === field) setSortAsc(!sortAsc);
@@ -74,12 +69,12 @@ export default function DataPage() {
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-5xl font-extrabold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-blue-400">
-            Data Dashboard
+            MusicFlow Manager
           </h1>
-          <p className="text-gray-200 text-lg mb-4">Manage and analyze your uploaded records</p>
+          <p className="text-gray-200 text-lg mb-4">Simple music catalog management</p>
           <input
             type="text"
-            placeholder="Search by work title, singer, or category..."
+            placeholder="Search by title, artist, or category..."
             className="h-18 text-2xl text-white p-3 rounded-xl w-full mx-auto font-medium outline-none border border-white/20 bg-gradient-to-r from-white/5 to-white/10  transition-all max-w-3xl"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -99,26 +94,6 @@ export default function DataPage() {
               ⬇️ Download PDF
             </button>
           </div>
-
-        {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          {[
-            { label: 'Total Records', value: totalRecords, icon: '🎵', bg: 'from-blue-400 to-blue-600' },
-            { label: 'Total Views', value: totalViews.toLocaleString(), icon: '👁️', bg: 'from-green-400 to-green-600' },
-            { label: 'Avg Views', value: avgViews.toLocaleString(), icon: '📊', bg: 'from-purple-400 to-purple-600' },
-          ].map((stat, i) => (
-            <div
-              key={i}
-              className={`p-6 rounded-2xl shadow-lg border border-white/20 backdrop-blur-md bg-gradient-to-r ${stat.bg} text-white flex items-center space-x-4`}
-            >
-              <div className="text-3xl">{stat.icon}</div>
-              <div>
-                <p className="text-sm opacity-80">{stat.label}</p>
-                <p className="text-2xl font-bold">{stat.value}</p>
-              </div>
-            </div>
-          ))}
-        </div>
 
         {/* Table */}
         <div className="rounded-2xl overflow-x-auto shadow-lg border border-white/20 backdrop-blur-md">

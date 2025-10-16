@@ -6,7 +6,7 @@ export default function Navbar() {
 
   const navItems = [
     { path: '/', label: '🏠 Home', key: 'home' },
-    { path: '/data', label: '📊 Data', key: 'data' }
+    { path: '/data', label: '🎵 Music Library', key: 'data' }
   ];
 
   const isActive = (path) => {
@@ -30,9 +30,9 @@ export default function Navbar() {
             onClick={() => handleNavigation('/')}
           >
             <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-purple-500 rounded-lg flex items-center justify-center shadow-lg">
-              <span className="text-white font-bold text-lg">D</span>
+              <span className="text-white font-bold text-lg">🎵</span>
             </div>
-            <h1 className="text-2xl font-bold text-white">DataFlow</h1>
+            <h1 className="text-2xl font-bold text-white">MusicFlow</h1>
           </div>
                      
           {/* Navigation Links */}

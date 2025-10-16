@@ -37,7 +37,7 @@ export default function Home() {
 
     // Validate file type
     if (!allowedExtensions.some(ext => fileName.endsWith(ext))) {
-      setMessage("⚠️ Please select a CSV, XLSX, XLS, or ODS file");
+      setMessage("⚠️ Please select an Excel file");
       return;
     }
 
@@ -102,34 +102,34 @@ export default function Home() {
         <div className="text-center mb-16">
           <div className="mb-8">
             <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full mb-6 animate-pulse">
-              <span className="text-3xl">📊</span>
+              <span className="text-3xl">🎵</span>
             </div>
           </div>
 
           <h1 className="text-6xl font-bold text-white mb-6 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-            Welcome to DataFlow
+            MusicFlow Manager
           </h1>
 
           <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
-            Transform your data management experience with our intuitive platform. Upload, process, and visualize your CSV data effortlessly.
+            Simple music catalog management. Upload and organize your music collection.
           </p>
 
           <div className="flex flex-wrap justify-center gap-6 mb-12">
             <FeatureCard
-              icon="🔒"
-              title="Secure Upload"
+              icon="🎼"
+              title="Music Catalog"
               bgColor="bg-emerald-500/20"
               textColor="text-emerald-400"
             />
             <FeatureCard
-              icon="⚡"
-              title="Lightning Fast"
+              icon="📊"
+              title="Track Analytics"
               bgColor="bg-blue-500/20"
               textColor="text-blue-400"
             />
             <FeatureCard
-              icon="📈"
-              title="Smart Analytics"
+              icon="⚡"
+              title="Easy Import"
               bgColor="bg-purple-500/20"
               textColor="text-purple-400"
             />
@@ -140,7 +140,7 @@ export default function Home() {
         <div className="max-w-2xl mx-auto">
           <div className="bg-white/5 backdrop-blur-xl rounded-3xl p-8 border border-white/10 shadow-2xl hover:shadow-3xl transition-shadow duration-300">
             <h2 className="text-3xl font-bold text-white mb-8 text-center">
-              Upload Your Data
+              Upload Music Data
             </h2>
 
             {/* Drag & Drop Zone */}
@@ -171,10 +171,10 @@ export default function Home() {
                     {file ? file.name : "Drop your file here"}
                   </p>
                   <p className="text-gray-300">
-                    or click to browse your files
+                    or click to browse files
                   </p>
                   <p className="text-sm text-gray-400 mt-2">
-                    Supported: CSV, XLSX, XLS, ODS (max 10MB)
+                    Supported: Excel files (max 10MB)
                   </p>
                 </div>
               </div>
@@ -193,7 +193,7 @@ export default function Home() {
                   <span>Processing...</span>
                 </div>
               ) : (
-                "🚀 Upload & Process"
+                "🎵 Upload File"
               )}
             </button>
 
@@ -208,7 +208,7 @@ export default function Home() {
                 onClick={navigateToData}
                 className="w-full py-3 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl transition-all duration-200 backdrop-blur-sm border border-white/20 hover:border-white/30 hover:scale-105 cursor-pointer"
               >
-                📊 View My Data Dashboard
+                🎼 View My Music Library
               </button>
             </div>
           </div>
@@ -218,7 +218,7 @@ export default function Home() {
   );
 }
 
-// Extracted components for better organization
+
 function FeatureCard({ icon, title, bgColor, textColor }) {
   return (
     <div className={`flex items-center space-x-3 ${textColor} hover:scale-105 transition-transform duration-200`}>
