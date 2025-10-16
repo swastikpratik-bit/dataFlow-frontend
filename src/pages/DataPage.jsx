@@ -124,10 +124,10 @@ export default function DataPage() {
           <table className="w-full text-left">
             <thead className="bg-white/10">
               <tr>
-                {['id', 'Name', 'Gender', 'Country', 'Age', 'Date'].map((col, idx) => (
+                {['DB ID', 'Ext ID', 'Name', 'Gender', 'Country', 'Age', 'Date'].map((col, idx) => (
                   <th
                     key={idx}
-                    onClick={() => handleSort(col.toLowerCase())}
+                    onClick={() => handleSort(col.toLowerCase().replace('db ', '').replace('ext ', 'ext_'))}
                     className="px-6 py-3 text-gray-200 cursor-pointer hover:text-green-400 transition-colors"
                   >
                     {col}
@@ -138,7 +138,7 @@ export default function DataPage() {
             <tbody>
               {filteredData.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="text-center py-16 text-gray-300">
+                  <td colSpan={7} className="text-center py-16 text-gray-300">
                     No data found
                   </td>
                 </tr>
@@ -149,6 +149,7 @@ export default function DataPage() {
                     className="border-t border-white/10 hover:bg-white/10 transition-colors cursor-pointer"
                     onClick={() => setSelectedRow(item)}
                   >
+                    <td className="px-6 py-4">{item.id}</td>
                     <td className="px-6 py-4">{item.ext_id}</td>
                     <td className="px-6 py-4">{item.first_name} {item.last_name}</td>
                     <td className="px-6 py-4">{item.gender}</td>
@@ -179,7 +180,8 @@ export default function DataPage() {
               <p><strong>Country:</strong> {selectedRow.country}</p>
               <p><strong>Age:</strong> {selectedRow.age}</p>
               <p><strong>Date:</strong> {new Date(selectedRow.date).toLocaleDateString()}</p>
-              <p><strong>ID:</strong> {selectedRow.ext_id}</p>
+              <p><strong>DB ID:</strong> {selectedRow.id}</p>
+              <p><strong>Ext ID:</strong> {selectedRow.ext_id}</p>
             </div>
           </div>
         )}
