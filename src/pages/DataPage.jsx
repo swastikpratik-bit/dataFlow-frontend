@@ -29,7 +29,7 @@ export default function DataPage() {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-800 to-purple-700">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-white border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-white text-xl font-medium">Loading your data...</p>
+          <p className="text-white text-xl font-medium">Loading data...</p>
         </div>
       </div>
     );
@@ -38,8 +38,9 @@ export default function DataPage() {
   // Filter and sort data
   const filteredData = data
     .filter(item =>
-      `${item.first_name} ${item.last_name}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.country.toLowerCase().includes(searchTerm.toLowerCase())
+      (item.work_title || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (item.singer_name || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (item.category || '').toLowerCase().includes(searchTerm.toLowerCase())
     )
     .sort((a, b) => {
       if (!a[sortField]) return 1;
@@ -51,11 +52,6 @@ export default function DataPage() {
       }
       return sortAsc ? a[sortField] - b[sortField] : b[sortField] - a[sortField];
     });
-
-  // Stats
-  const totalRecords = filteredData.length;
-  const avgAge = totalRecords > 0 ? Math.round(filteredData.reduce((sum, i) => sum + i.age, 0) / totalRecords) : 0;
-  const maxAge = totalRecords > 0 ? Math.max(...filteredData.map(i => i.age)) : 0;
 
   // Sorting handler
   const handleSort = (field) => {
@@ -73,12 +69,12 @@ export default function DataPage() {
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-5xl font-extrabold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-blue-400">
-            Data Dashboard
+            MusicFlow Manager
           </h1>
-          <p className="text-gray-200 text-lg mb-4">Manage and analyze your uploaded records</p>
+          <p className="text-gray-200 text-lg mb-4">Simple music catalog management</p>
           <input
             type="text"
-            placeholder="Search by name or country..."
+            placeholder="Search by title, artist, or category..."
             className="h-18 text-2xl text-white p-3 rounded-xl w-full mx-auto font-medium outline-none border border-white/20 bg-gradient-to-r from-white/5 to-white/10  transition-all max-w-3xl"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -99,36 +95,15 @@ export default function DataPage() {
             </button>
           </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          {[
-            { label: 'Total Records', value: totalRecords, icon: '📄', bg: 'from-blue-400 to-blue-600' },
-            { label: 'Avg Age', value: avgAge, icon: '⚡', bg: 'from-green-400 to-green-600' },
-            { label: 'Max Age', value: maxAge, icon: '🏆', bg: 'from-purple-400 to-purple-600' },
-          ].map((stat, i) => (
-            <div
-              key={i}
-              className={`p-6 rounded-2xl shadow-lg border border-white/20 backdrop-blur-md bg-gradient-to-r ${stat.bg} text-white flex items-center space-x-4`}
-            >
-              <div className="text-3xl">{stat.icon}</div>
-              <div>
-                <p className="text-sm opacity-80">{stat.label}</p>
-                <p className="text-2xl font-bold">{stat.value}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-
         {/* Table */}
-        <div className="rounded-2xl overflow-hidden shadow-lg border border-white/20 backdrop-blur-md">
-          <table className="w-full text-left">
+        <div className="rounded-2xl overflow-x-auto shadow-lg border border-white/20 backdrop-blur-md">
+          <table className="w-full text-left min-w-max">
             <thead className="bg-white/10">
               <tr>
-                {['DB ID', 'Ext ID', 'Name', 'Gender', 'Country', 'Age', 'Date'].map((col, idx) => (
+                {['ID', 'Sl No', 'Video URL', 'ISRC', 'IPRS Work Int No', 'EJNW', 'Work Title', 'Alternative Titles', 'Singer Name', 'Release Date', 'Duration', 'Views', 'M/K', 'Category', 'Tunecode', 'ISWC', 'ICE Work Key', 'Old Tunecodes', 'CA1', 'Screen Name1', 'CAE/IPI-1', 'Per%1', 'Mec%1', 'CA2', 'Screen Name2', 'CAE/IPI-2', 'Per%2', 'Mec%2', 'CA3', 'Screen Name3', 'CAE/IPI-3', 'Per%3', 'Mec%3', 'CA4', 'Screen Name4', 'CAE/IPI-4', 'Per%4', 'Mec%4', 'CA5', 'Screen Name5', 'CAE/IPI-5', 'Per%5', 'Mec%5', 'CA6', 'Screen Name6', 'CAE/IPI-6', 'Per%6', 'Mec%6'].map((col, idx) => (
                   <th
                     key={idx}
-                    onClick={() => handleSort(col.toLowerCase().replace('db ', '').replace('ext ', 'ext_'))}
-                    className="px-6 py-3 text-gray-200 cursor-pointer hover:text-green-400 transition-colors"
+                    className="px-4 py-3 text-gray-200 whitespace-nowrap min-w-[120px]"
                   >
                     {col}
                   </th>
@@ -138,7 +113,7 @@ export default function DataPage() {
             <tbody>
               {filteredData.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="text-center py-16 text-gray-300">
+                  <td colSpan={47} className="text-center py-16 text-gray-300">
                     No data found
                   </td>
                 </tr>
@@ -149,13 +124,54 @@ export default function DataPage() {
                     className="border-t border-white/10 hover:bg-white/10 transition-colors cursor-pointer"
                     onClick={() => setSelectedRow(item)}
                   >
-                    <td className="px-6 py-4">{item.id}</td>
-                    <td className="px-6 py-4">{item.ext_id}</td>
-                    <td className="px-6 py-4">{item.first_name} {item.last_name}</td>
-                    <td className="px-6 py-4">{item.gender}</td>
-                    <td className="px-6 py-4">{item.country}</td>
-                    <td className="px-6 py-4">{item.age}</td>
-                    <td className="px-6 py-4">{new Date(item.date).toLocaleDateString()}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{item.id || 'NULL'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{item.sl_no || 'NULL'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap max-w-[200px] truncate">{item.video_url || 'NULL'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{item.isrc || 'NULL'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{item.iprs_work_int_no || 'NULL'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{item.ejnw || 'NULL'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap max-w-[200px] truncate">{item.work_title || 'NULL'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap max-w-[200px] truncate">{item.alternative_titles || 'NULL'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{item.singer_name || 'NULL'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{item.release_date ? new Date(item.release_date).toLocaleDateString() : 'NULL'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{item.duration || 'NULL'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{item.views ? parseInt(item.views).toLocaleString() : 'NULL'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{item.m_k || 'NULL'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{item.category || 'NULL'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{item.tunecode || 'NULL'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{item.iswc || 'NULL'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{item.ice_work_key || 'NULL'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{item.old_tunecodes || 'NULL'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{item.ca1 || 'NULL'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{item.screen_name1 || 'NULL'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{item.cae_ipi_1 || 'NULL'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{item.per_1 || 'NULL'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{item.mec_1 || 'NULL'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{item.ca2 || 'NULL'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{item.screen_name2 || 'NULL'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{item.cae_ipi_2 || 'NULL'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{item.per_2 || 'NULL'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{item.mec_2 || 'NULL'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{item.ca3 || 'NULL'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{item.screen_name3 || 'NULL'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{item.cae_ipi_3 || 'NULL'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{item.per_3 || 'NULL'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{item.mec_3 || 'NULL'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{item.ca4 || 'NULL'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{item.screen_name4 || 'NULL'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{item.cae_ipi_4 || 'NULL'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{item.per_4 || 'NULL'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{item.mec_4 || 'NULL'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{item.ca5 || 'NULL'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{item.screen_name5 || 'NULL'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{item.cae_ipi_5 || 'NULL'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{item.per_5 || 'NULL'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{item.mec_5 || 'NULL'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{item.ca6 || 'NULL'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{item.screen_name6 || 'NULL'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{item.cae_ipi_6 || 'NULL'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{item.per_6 || 'NULL'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{item.mec_6 || 'NULL'}</td>
                   </tr>
                 ))
               )}
@@ -174,14 +190,16 @@ export default function DataPage() {
                 &times;
               </button>
               <h2 className="text-xl font-bold mb-4">
-                {selectedRow.first_name} {selectedRow.last_name}
+                {selectedRow.work_title}
               </h2>
-              <p><strong>Gender:</strong> {selectedRow.gender}</p>
-              <p><strong>Country:</strong> {selectedRow.country}</p>
-              <p><strong>Age:</strong> {selectedRow.age}</p>
-              <p><strong>Date:</strong> {new Date(selectedRow.date).toLocaleDateString()}</p>
+              <p><strong>Singer:</strong> {selectedRow.singer_name}</p>
+              <p><strong>Category:</strong> {selectedRow.category}</p>
+              <p><strong>Views:</strong> {parseInt(selectedRow.views || 0).toLocaleString()}</p>
+              <p><strong>Duration:</strong> {selectedRow.duration}</p>
+              <p><strong>ISRC:</strong> {selectedRow.isrc}</p>
+              <p><strong>Release Date:</strong> {selectedRow.release_date ? new Date(selectedRow.release_date).toLocaleDateString() : 'N/A'}</p>
               <p><strong>DB ID:</strong> {selectedRow.id}</p>
-              <p><strong>Ext ID:</strong> {selectedRow.ext_id}</p>
+              <p><strong>Sl No:</strong> {selectedRow.sl_no}</p>
             </div>
           </div>
         )}
