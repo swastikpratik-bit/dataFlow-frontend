@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../utils/axios';
 import { downloadPDF, downloadXLSX } from '../utils/exportData';
 
 export default function DataPage() {
@@ -13,7 +13,7 @@ export default function DataPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/data`);
+        const response = await api.get('/api/data');
         setData(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -64,31 +64,31 @@ export default function DataPage() {
 
 
   return (
-    <div className="min-h-screen px-4 py-8 bg-gradient-to-br from-blue-900 to-purple-800 text-white">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen px-2 sm:px-4 py-4 sm:py-8 bg-gradient-to-br from-blue-900 to-purple-800 text-white">
+      <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-5xl font-extrabold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-blue-400">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-blue-400">
             MusicFlow Manager
           </h1>
-          <p className="text-gray-200 text-lg mb-4">Simple music catalog management</p>
+          <p className="text-gray-200 text-base sm:text-lg mb-4">Simple music catalog management</p>
           <input
             type="text"
             placeholder="Search by title, artist, or category..."
-            className="h-18 text-2xl text-white p-3 rounded-xl w-full mx-auto font-medium outline-none border border-white/20 bg-gradient-to-r from-white/5 to-white/10  transition-all max-w-3xl"
+            className="h-12 sm:h-16 text-base sm:text-xl lg:text-2xl text-white p-3 rounded-xl w-full mx-auto font-medium outline-none border border-white/20 bg-gradient-to-r from-white/5 to-white/10 transition-all max-w-3xl"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-        <div className="flex justify-center gap-2 mb-4 ">
+        <div className="flex flex-col sm:flex-row justify-center gap-2 mb-4 px-2">
             <button
-              className="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg font-medium transition-colors cursor-pointer"
+              className="px-3 sm:px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg font-medium transition-colors cursor-pointer text-sm sm:text-base"
               onClick={() => downloadXLSX(data)}
             >
               ⬇️ Download Excel
             </button>
             <button
-              className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium transition-colors cursor-pointer"
+              className="px-3 sm:px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium transition-colors cursor-pointer text-sm sm:text-base"
               onClick={() => downloadPDF(data)}
             >
               ⬇️ Download PDF
@@ -97,13 +97,16 @@ export default function DataPage() {
 
         {/* Table */}
         <div className="rounded-2xl overflow-x-auto shadow-lg border border-white/20 backdrop-blur-md">
+          <div className="block sm:hidden mb-4 text-center text-gray-300 text-sm">
+            ← Scroll horizontally to view all columns →
+          </div>
           <table className="w-full text-left min-w-max">
             <thead className="bg-white/10">
               <tr>
                 {['ID', 'Sl No', 'Video URL', 'ISRC', 'IPRS Work Int No', 'EJNW', 'Work Title', 'Alternative Titles', 'Singer Name', 'Release Date', 'Duration', 'Views', 'M/K', 'Category', 'Tunecode', 'ISWC', 'ICE Work Key', 'Old Tunecodes', 'CA1', 'Screen Name1', 'CAE/IPI-1', 'Per%1', 'Mec%1', 'CA2', 'Screen Name2', 'CAE/IPI-2', 'Per%2', 'Mec%2', 'CA3', 'Screen Name3', 'CAE/IPI-3', 'Per%3', 'Mec%3', 'CA4', 'Screen Name4', 'CAE/IPI-4', 'Per%4', 'Mec%4', 'CA5', 'Screen Name5', 'CAE/IPI-5', 'Per%5', 'Mec%5', 'CA6', 'Screen Name6', 'CAE/IPI-6', 'Per%6', 'Mec%6'].map((col, idx) => (
                   <th
                     key={idx}
-                    className="px-4 py-3 text-gray-200 whitespace-nowrap min-w-[120px]"
+                    className="px-2 sm:px-4 py-2 sm:py-3 text-gray-200 whitespace-nowrap min-w-[100px] sm:min-w-[120px] text-xs sm:text-sm"
                   >
                     {col}
                   </th>
@@ -184,7 +187,7 @@ export default function DataPage() {
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
             <div className="bg-gray-900 rounded-2xl p-6 max-w-md w-full text-white relative shadow-xl">
               <button
-                className="absolute top-3 right-3 text-gray-300 font-bold text-2xl hover:text-red-400"
+                className="absolute top-3 right-3 text-gray-300 font-bold text-2xl hover:text-red-400 cursor-pointer"
                 onClick={() => setSelectedRow(null)}
               >
                 &times;

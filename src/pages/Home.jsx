@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../utils/axios';
 
 
 export default function Home() {
@@ -69,7 +69,7 @@ export default function Home() {
       const formData = new FormData();
       formData.append('file', file);
 
-      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/upload`, formData, {
+      const response = await api.post('/api/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -106,15 +106,15 @@ export default function Home() {
             </div>
           </div>
 
-          <h1 className="text-6xl font-bold text-white mb-6 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
             MusicFlow Manager
           </h1>
 
-          <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-lg sm:text-xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed px-4">
             Simple music catalog management. Upload and organize your music collection.
           </p>
 
-          <div className="flex flex-wrap justify-center gap-6 mb-12">
+          <div className="flex flex-wrap justify-center gap-4 sm:gap-6 mb-12 px-4">
             <FeatureCard
               icon="🎼"
               title="Music Catalog"
@@ -137,15 +137,15 @@ export default function Home() {
         </div>
 
         {/* Upload Card */}
-        <div className="max-w-2xl mx-auto">
-          <div className="bg-white/5 backdrop-blur-xl rounded-3xl p-8 border border-white/10 shadow-2xl hover:shadow-3xl transition-shadow duration-300">
-            <h2 className="text-3xl font-bold text-white mb-8 text-center">
+        <div className="max-w-2xl mx-auto px-4">
+          <div className="bg-white/5 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-white/10 shadow-2xl hover:shadow-3xl transition-shadow duration-300">
+            <h2 className="text-2xl sm:text-3xl font-bold text-white mb-6 sm:mb-8 text-center">
               Upload Music Data
             </h2>
 
             {/* Drag & Drop Zone */}
             <div
-              className={`relative border-2 border-dashed rounded-2xl p-12 text-center transition-all duration-300 ${dragActive
+              className={`relative border-2 border-dashed rounded-2xl p-8 sm:p-12 text-center transition-all duration-300 ${dragActive
                   ? "border-blue-400 bg-blue-400/10 scale-105"
                   : "border-gray-400 hover:border-blue-400 hover:bg-blue-400/5"
                 }`}
@@ -163,17 +163,17 @@ export default function Home() {
               />
 
               <div className="space-y-6">
-                <div className="text-6xl animate-bounce">
+                <div className="text-4xl sm:text-6xl animate-bounce">
                   {file ? "📄" : "☁️"}
                 </div>
                 <div className="text-white">
-                  <p className="text-xl font-semibold mb-2">
+                  <p className="text-lg sm:text-xl font-semibold mb-2">
                     {file ? file.name : "Drop your file here"}
                   </p>
-                  <p className="text-gray-300">
+                  <p className="text-gray-300 text-sm sm:text-base">
                     or click to browse files
                   </p>
-                  <p className="text-sm text-gray-400 mt-2">
+                  <p className="text-xs sm:text-sm text-gray-400 mt-2">
                     Supported: Excel files (max 10MB)
                   </p>
                 </div>
@@ -185,7 +185,7 @@ export default function Home() {
             <button
               onClick={handleUpload}
               disabled={uploading || !file}
-              className="w-full mt-8 py-4 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white font-bold text-lg rounded-2xl hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 disabled:from-gray-500 disabled:to-gray-600 transition-all duration-300 shadow-lg hover:shadow-2xl transform hover:-translate-y-1 disabled:transform-none disabled:cursor-not-allowed"
+              className="w-full mt-6 sm:mt-8 py-3 sm:py-4 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white font-bold text-base sm:text-lg rounded-2xl hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 disabled:from-gray-500 disabled:to-gray-600 transition-all duration-300 shadow-lg hover:shadow-2xl transform hover:-translate-y-1 disabled:transform-none disabled:cursor-not-allowed"
             >
               {uploading ? (
                 <div className="flex items-center justify-center space-x-3">
